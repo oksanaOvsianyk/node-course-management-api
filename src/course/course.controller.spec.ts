@@ -1,12 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CourseController } from './course.controller';
-import { CourseService } from './course.service'; // Імпортуємо реальний сервіс
+import { CourseService } from './course.service'; 
 
-// 1. Оголошуємо мок-клас для сервісу
 const mockCourseService = {
   findAll: jest.fn(),
   findOne: jest.fn(),
-  // Додайте тут інші методи, які викликає контролер (create, update, remove)
 };
 
 describe('CourseController', () => {
@@ -16,7 +14,6 @@ describe('CourseController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CourseController],
       providers: [
-        // 2. Замінюємо реальний CourseService мок-об'єктом
         {
           provide: CourseService,
           useValue: mockCourseService,

@@ -4,7 +4,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UserService {
-  // Статичні дані користувачів
   private users: User[] = [
     {
       id: 101,

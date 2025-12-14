@@ -4,7 +4,7 @@ import { CreateCourseDto } from './dto/create-course.dto';
 
 @Injectable()
 export class CourseService {
-  // Статичні дані курсів
+  
   private courses: Course[] = [
     {
       id: 1,

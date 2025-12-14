@@ -12,7 +12,7 @@ import { CourseService } from './course.service';
 import type { Course } from './interfaces/course.interface';
 import { CreateCourseDto } from './dto/create-course.dto';
 
-@Controller('api/v1/courses') // Базовий маршрут
+@Controller('api/v1/courses')
 export class CourseController {
   constructor(private courseService: CourseService) {}
 

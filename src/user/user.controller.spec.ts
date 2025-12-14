@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
-import { UserService } from './user.service'; // Імпортуємо реальний сервіс
+import { UserService } from './user.service'; 
 
-// 1. Оголошуємо мок-клас для сервісу
+
 const mockUserService = {
-  // Додайте тут усі методи, які викликає контролер (create, findOne, update, findAll)
+ 
   findOne: jest.fn(),
   create: jest.fn(),
   update: jest.fn(),
@@ -18,7 +18,7 @@ describe('UserController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UserController],
       providers: [
-        // 2. Замінюємо реальний UserService мок-об'єктом
+        
         {
           provide: UserService,
           useValue: mockUserService,
