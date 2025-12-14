@@ -3,7 +3,7 @@ import {
   Get,
   Post,
   Put,
-  Delete, // Додано Delete
+  Delete,
   Body,
   Param,
   ParseIntPipe,
@@ -12,43 +12,50 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import type { User } from './interfaces/user.interface';
-@Controller('api/v1/users') // Базовий маршрут
+
+import { User } from '../user/user.entity';
+
+@Controller('api/v1/users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  // Роут 1: POST /api/v1/users (Створення)
+  // 1. POST /api/v1/users (Створення)
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createUserDto: CreateUserDto): User {
+  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
+    // Додано async та змінено тип повернення на Promise<User>
     return this.userService.create(createUserDto);
   }
 
-  // Роут 2: GET /api/v1/users (Отримати список всіх користувачів)
+  // 2. GET /api/v1/users (Отримати список всіх користувачів)
   @Get()
-  findAll(): User[] {
+  async findAll(): Promise<User[]> {
+   
     return this.userService.findAll();
   }
 
-  // Роут 3: GET /api/v1/users/:id (Отримати профіль)
+  // 3. GET /api/v1/users/:id (Отримати профіль)
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number): User {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
+    
     return this.userService.findOne(id);
   }
 
-  // Роут 4: PUT /api/v1/users/:id (Оновити профіль)
+  // 4. PUT /api/v1/users/:id (Оновити профіль)
   @Put(':id')
-  update(
+  async update(
+    
     @Param('id', ParseIntPipe) id: number,
     @Body() updateData: Partial<User>,
-  ): User {
+  ): Promise<User> {
     return this.userService.update(id, updateData);
   }
 
-  // Роут 5: DELETE /api/v1/users/:id (Видалити користувача)
+  // 5. DELETE /api/v1/users/:id (Видалити користувача)
   @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT) // 204 No Content при успішному видаленні
-  remove(@Param('id', ParseIntPipe) id: number): void {
-    this.userService.remove(id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+   
+    return this.userService.remove(id);
   }
 }

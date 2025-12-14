@@ -1,53 +1,40 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { User } from './interfaces/user.interface';
+import { InjectRepository } from '@nestjs/typeorm'; // <-- НОВИЙ ІМПОРТ
+import { Repository } from 'typeorm'; // <-- НОВИЙ ІМПОРТ
+import { User } from './user.entity'; // <-- ЗМІНА: Імпортуємо Entity, а не Interface
 import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UserService {
-  private users: User[] = [
-    {
-      id: 101,
-      firstName: 'Anna',
-      lastName: 'Kovalenko',
-      email: 'anna@example.com',
-      role: 'Instructor',
-    },
-    {
-      id: 201,
-      firstName: 'Bohdan',
-      lastName: 'Ivanchenko',
-      email: 'bohdan@example.com',
-      role: 'Student',
-    },
-    {
-      id: 301,
-      firstName: 'Olena',
-      lastName: 'Petrenko',
-      email: 'olena@example.com',
-      role: 'Student',
-    },
-  ];
-  private nextId = 400; // Лічильник для нових ID
+  // 1. ВИДАЛИТИ: private users: User[] = [...] та private nextId = 400;
+
+  // 2. ДОДАТИ: Ін'єкція репозиторію
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+  ) {}
 
   // Роут 1: Створити користувача (POST)
-  create(createUserDto: CreateUserDto): User {
-    const newUser: User = {
-      id: this.nextId++,
-      ...createUserDto,
-      role: createUserDto.role || 'Student',
-    };
-    this.users.push(newUser);
-    return newUser;
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    // <-- async
+    // Створюємо екземпляр сутності
+    const newUser = this.usersRepository.create(createUserDto);
+    // Зберігаємо його у БД
+    return this.usersRepository.save(newUser);
   }
 
-  // === ДОДАНО: Роут 2: Отримати список усіх користувачів (GET /) ===
-  findAll(): User[] {
-    return this.users;
+  // Роут 2: Отримати список усіх користувачів (GET /)
+  async findAll(): Promise<User[]> {
+    // <-- async
+    return this.usersRepository.find();
   }
 
   // Роут 3: Отримати профіль за ID (GET /:id)
-  findOne(id: number): User {
-    const user = this.users.find((u) => u.id === id);
+  async findOne(id: number): Promise<User> {
+    // <-- async
+    // findOneBy - стандартний метод TypeORM
+    const user = await this.usersRepository.findOneBy({ id });
+
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
@@ -55,25 +42,27 @@ export class UserService {
   }
 
   // Роут 4: Оновити профіль (PUT /:id)
-  update(id: number, updateData: Partial<User>): User {
-    const index = this.users.findIndex((u) => u.id === id);
-    if (index === -1) {
+  async update(id: number, updateData: Partial<User>): Promise<User> {
+    // <-- async
+    const user = await this.usersRepository.findOneBy({ id });
+
+    if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-    this.users[index] = { ...this.users[index], ...updateData };
-    return this.users[index];
+
+    // Оновлюємо властивості об'єкта та зберігаємо зміни
+    Object.assign(user, updateData);
+    return this.usersRepository.save(user);
   }
 
-  // === ДОДАНО: Роут 5: Видалити користувача (DELETE /:id) ===
-  remove(id: number): void {
-    const initialLength = this.users.length;
-    // Фільтруємо масив, залишаючи лише тих, хто не відповідає заданому ID
-    this.users = this.users.filter((u) => u.id !== id);
+  // Роут 5: Видалити користувача (DELETE /:id)
+  async remove(id: number): Promise<void> {
+    // <-- async
+    const result = await this.usersRepository.delete(id); // Використовуємо метод delete
 
-    // Перевірка, чи був користувач знайдений та видалений
-    if (this.users.length === initialLength) {
+    // TypeORM повертає affected: 0, якщо рядок не знайдено
+    if (result.affected === 0) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-    // Успішне видалення повертає void (HTTP 204 No Content)
   }
 }
