@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Course } from '../course/course.entity'; 
+import { Course } from '../course/course.entity';
 
 @Entity('lessons')
 export class Lesson {
@@ -17,5 +17,5 @@ export class Lesson {
 
   // Зв'язок N:1 (Багато уроків належать одному курсу)
   @ManyToOne(() => Course, (course) => course.lessons)
-  course: Course;
+  course: Course | null;
 }

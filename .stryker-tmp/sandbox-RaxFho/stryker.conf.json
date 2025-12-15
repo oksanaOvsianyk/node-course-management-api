@@ -1,0 +1,16 @@
+{
+  "$schema": "https://raw.githubusercontent.com/stryker-mutator/stryker-js/stryker-4.0.0/packages/core/schema/stryker-schema.json",
+  "packageManager": "npm",
+  "mutate": [
+    "src/**/*.service.ts",
+    "!src/**/__tests__/*.ts",
+    "!src/main.ts",
+    "!src/**/*.integration.spec.ts"
+  ],
+  "testRunner": "jest",
+  "reporters": ["progress", "clear-text", "html"],
+  "coverageAnalysis": "perTest",
+  "commandRunner": {
+    "command": "npm test -- --coverage"
+  }
+}

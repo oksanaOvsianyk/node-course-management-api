@@ -25,7 +25,7 @@ export class Course {
 
   // Зв'язок N:1 (Багато курсів належать одному інструктору)
   @ManyToOne(() => User, (user) => user.courses)
-  instructor: User;
+  instructor: User | null;
 
   // Зв'язок 1:N (Один курс має багато уроків)
   @OneToMany(() => Lesson, (lesson) => lesson.course)
