@@ -52,7 +52,7 @@ export class CourseController {
 
   // Роут 5: DELETE /api/v1/courses/:id (Видалення курсу)
   @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT) 
+  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     // <-- Додано async
     return this.courseService.remove(id);

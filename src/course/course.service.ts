@@ -7,7 +7,6 @@ import { CreateCourseDto } from './dto/create-course.dto';
 
 @Injectable()
 export class CourseService {
-
   constructor(
     @InjectRepository(Course)
     private coursesRepository: Repository<Course>,
@@ -55,7 +54,6 @@ export class CourseService {
       throw new NotFoundException(`Course with ID ${id} not found`);
     }
 
-    
     Object.assign(course, updateData);
     return this.coursesRepository.save(course);
   }

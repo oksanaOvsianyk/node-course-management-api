@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { Lesson } from './lesson.entity';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 
-
 @Injectable()
 export class LessonService {
   // Ін'єкція репозиторію Lesson
@@ -21,7 +20,6 @@ export class LessonService {
 
   // 2. Отримати список усіх уроків (GET /)
   async findAll(): Promise<Lesson[]> {
-    
     return this.lessonsRepository.find({ relations: ['course'] });
   }
 

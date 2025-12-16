@@ -14,7 +14,6 @@ import { Enrollment } from './enrollment/enrollment.entity';
 
 @Module({
   imports: [
-   
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -27,7 +26,7 @@ import { Enrollment } from './enrollment/enrollment.entity';
     }),
     UserModule,
     CourseModule,
-    LessonModule, 
+    LessonModule,
   ],
   controllers: [AppController],
   providers: [AppService],

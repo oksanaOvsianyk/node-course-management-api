@@ -1,27 +1,35 @@
-// test/app.e2e-spec.ts
-
-import request = require('supertest');
+import request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../src/app.module';
 
+// Описуємо інтерфейс для відповіді, щоб уникнути помилок any
+interface TestResponse {
+  id: number;
+  email?: string;
+  title?: string;
+  instructor?: { id: number };
+  lessons?: any[];
+}
 
 describe('E2E Test Suite (e2e)', () => {
   let app: INestApplication;
-  const baseUrl = '/api/v1'; // Ваш базовий префікс
+  const baseUrl = '/api/v1';
+
+  // Змінні для зберігання ID замість використання global (що є поганою практикою)
+  let instructorId: number;
+  let courseId: number;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule], // Імпортуємо весь додаток
+      imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
   });
 
-  // --- E2E ТЕСТИ ---
-
-  // Тест 1: Створення Інструктора (User Module E2E)
+  // Тест 1: Створення Інструктора
   it(`${baseUrl}/users (POST) - Create Instructor`, () => {
     const instructorData = {
       firstName: 'Test',
@@ -33,59 +41,58 @@ describe('E2E Test Suite (e2e)', () => {
       .post(`${baseUrl}/users`)
       .send(instructorData)
       .expect(201)
-      .expect((res) => {
-        global.instructorId = res.body.id; // Зберігаємо ID для подальших тестів
+      .expect((res: { body: TestResponse }) => {
+        instructorId = res.body.id; // Зберігаємо в локальну змінну
         expect(res.body.email).toEqual(instructorData.email);
       });
   });
 
-  // Тест 2: Створення Курсу (Course Module E2E)
+  // Тест 2: Створення Курсу
   it(`${baseUrl}/courses (POST) - Create Course and check relations`, () => {
     const courseData = {
       title: 'E2E Course',
       description: 'Full system test',
-      instructorId: global.instructorId, // Використовуємо ID з попереднього тесту
+      instructorId: instructorId,
     };
     return request(app.getHttpServer())
       .post(`${baseUrl}/courses`)
       .send(courseData)
       .expect(201)
-      .expect((res) => {
-        global.courseId = res.body.id; // Зберігаємо ID для подальших тестів
+      .expect((res: { body: TestResponse }) => {
+        courseId = res.body.id;
         expect(res.body.title).toEqual(courseData.title);
       });
   });
 
-  // Тест 3: Створення Уроку (Lesson Module E2E)
+  // Тест 3: Створення Уроку
   it(`${baseUrl}/lessons (POST) - Create Lesson`, () => {
     const lessonData = {
       title: 'E2E Lesson 1',
       content: 'Content',
-      courseId: global.courseId,
+      courseId: courseId,
     };
     return request(app.getHttpServer())
       .post(`${baseUrl}/lessons`)
       .send(lessonData)
       .expect(201)
-      .expect((res) => {
-        global.lessonId = res.body.id;
+      .expect((res: { body: TestResponse }) => {
         expect(res.body.title).toEqual(lessonData.title);
       });
   });
 
-  // Тест 4: Перевірка Зв'язків (Course GET E2E)
+  // Тест 4: Перевірка Зв'язків
   it(`${baseUrl}/courses/:id (GET) - Check relations (Lessons, Instructor)`, () => {
     return request(app.getHttpServer())
-      .get(`${baseUrl}/courses/${global.courseId}`)
+      .get(`${baseUrl}/courses/${courseId}`)
       .expect(200)
-      .expect((res) => {
-        expect(res.body.instructor.id).toEqual(global.instructorId);
+      .expect((res: { body: TestResponse }) => {
+        // Додаємо перевірку на існування об'єктів перед доступом до них
+        expect(res.body.instructor?.id).toEqual(instructorId);
         expect(res.body.lessons).toHaveLength(1);
       });
   });
 
   afterAll(async () => {
-    // Очищення даних (для E2E це бажано, але складніше. Можна пропустити для ЛР №5)
     await app.close();
   });
 });

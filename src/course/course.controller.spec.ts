@@ -43,8 +43,8 @@ describe('CourseController', () => {
     controller = module.get<CourseController>(CourseController);
     jest.clearAllMocks();
 
-    (mockCourseService.findOne as jest.Mock).mockResolvedValue(mockCourse);
-    (mockCourseService.update as jest.Mock).mockResolvedValue({
+    mockCourseService.findOne.mockResolvedValue(mockCourse);
+    mockCourseService.update.mockResolvedValue({
       ...mockCourse,
       ...updateDto,
     });
@@ -88,7 +88,7 @@ describe('CourseController', () => {
 
   // T6: Перевірка прокидання помилки
   it('7. should throw NotFoundException if service throws it', async () => {
-    (mockCourseService.findOne as jest.Mock).mockRejectedValue(
+    mockCourseService.findOne.mockRejectedValue(
       new NotFoundException('Course not found'),
     );
     await expect(controller.findOne('99' as any)).rejects.toThrow(

@@ -47,7 +47,7 @@ describe('UserController', () => {
 
     controller = module.get<UserController>(UserController);
     jest.clearAllMocks();
-    (mockUserService.findOne as jest.Mock).mockResolvedValue(mockUser);
+    mockUserService.findOne.mockResolvedValue(mockUser);
   });
 
   it('1. should be defined', () => {
@@ -82,7 +82,7 @@ describe('UserController', () => {
   }); // T6: Перевірка прокидання помилки
 
   it('7. should throw NotFoundException if service throws it', async () => {
-    (mockUserService.findOne as jest.Mock).mockRejectedValue(
+    mockUserService.findOne.mockRejectedValue(
       new NotFoundException('Test not found'),
     );
     await expect(controller.findOne('99' as any)).rejects.toThrow(

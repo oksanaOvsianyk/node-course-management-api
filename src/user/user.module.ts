@@ -11,6 +11,5 @@ import { User } from './user.entity'; // Імпорт створеної сут�
   ],
   controllers: [UserController],
   providers: [UserService],
-  
 })
 export class UserModule {}

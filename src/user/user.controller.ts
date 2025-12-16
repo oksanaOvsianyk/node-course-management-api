@@ -30,21 +30,18 @@ export class UserController {
   // 2. GET /api/v1/users (Отримати список всіх користувачів)
   @Get()
   async findAll(): Promise<User[]> {
-   
     return this.userService.findAll();
   }
 
   // 3. GET /api/v1/users/:id (Отримати профіль)
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
-    
     return this.userService.findOne(id);
   }
 
   // 4. PUT /api/v1/users/:id (Оновити профіль)
   @Put(':id')
   async update(
-    
     @Param('id', ParseIntPipe) id: number,
     @Body() updateData: Partial<User>,
   ): Promise<User> {
@@ -55,7 +52,6 @@ export class UserController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
-   
     return this.userService.remove(id);
   }
 }

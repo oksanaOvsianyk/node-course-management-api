@@ -1,10 +1,7 @@
 export class CreateLessonDto {
- 
   title: string;
 
- 
-  content?: string; 
+  content?: string;
 
-  
-  courseId: number; 
+  courseId: number;
 }
