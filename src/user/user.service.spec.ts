@@ -35,7 +35,7 @@ describe('UserService', () => {
   const mockRepository = {
     find: jest.fn().mockResolvedValue(mockUsers),
     findOneBy: jest.fn().mockResolvedValue(mockUser),
-    
+
     create: jest
       .fn()
       .mockImplementation((dto: CreateUserDto): User => dto as User),
@@ -55,7 +55,7 @@ describe('UserService', () => {
     }).compile();
 
     service = module.get<UserService>(UserService);
-   
+
     repository = module.get<Repository<User>>(getRepositoryToken(User));
     jest.clearAllMocks();
   });
@@ -66,7 +66,6 @@ describe('UserService', () => {
   });
 
   it('should create a user', async () => {
-   
     const result = await service.create(createUserDto);
     expect(mockRepository.create).toHaveBeenCalledWith(createUserDto);
     expect(mockRepository.save).toHaveBeenCalled();
@@ -86,7 +85,6 @@ describe('UserService', () => {
   });
 
   it('should throw NotFoundException if user is not found', async () => {
-   
     jest.spyOn(mockRepository, 'findOneBy').mockResolvedValueOnce(null);
     await expect(service.findOne(99)).rejects.toThrow(
       'User with ID 99 not found',

@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CourseService } from './course.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Course } from './course.entity';
-import { Repository } from 'typeorm'; 
+import { Repository } from 'typeorm';
 import { CreateCourseDto } from './dto/create-course.dto';
-import { User } from '../user/user.entity'; 
+import { User } from '../user/user.entity';
 
 // 1. Імітаційні дані
 const mockCourse = {
@@ -32,7 +32,7 @@ const mockRepository: Partial<Repository<Course>> = {
   find: jest.fn().mockResolvedValue(mockCourses),
   findOne: jest.fn(),
   findOneBy: jest.fn(),
-  
+
   create: jest
     .fn()
     .mockImplementation((dto: CreateCourseDto): Course => dto as Course),
@@ -71,7 +71,6 @@ describe('CourseService', () => {
   // --- CRUD ТЕСТИ ---
 
   it('should create a course and return it', async () => {
-   
     const result = await service.create(createCourseDto);
     expect(mockRepository.create).toHaveBeenCalledWith(createCourseDto);
     expect(mockRepository.save).toHaveBeenCalled();

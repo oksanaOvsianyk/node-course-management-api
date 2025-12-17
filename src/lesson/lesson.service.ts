@@ -6,7 +6,6 @@ import { CreateLessonDto } from './dto/create-lesson.dto';
 
 @Injectable()
 export class LessonService {
-  
   constructor(
     @InjectRepository(Lesson)
     private lessonsRepository: Repository<Lesson>,

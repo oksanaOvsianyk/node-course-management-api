@@ -3,7 +3,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../src/app.module';
 
-
 interface TestResponse {
   id: number;
   email?: string;
@@ -16,7 +15,6 @@ describe('E2E Test Suite (e2e)', () => {
   let app: INestApplication;
   const baseUrl = '/api/v1';
 
- 
   let instructorId: number;
   let courseId: number;
 

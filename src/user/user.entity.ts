@@ -4,10 +4,10 @@ import { Enrollment } from '../enrollment/enrollment.entity';
 
 @Entity('users') // Назва таблиці у PostgreSQL
 export class User {
-  @PrimaryGeneratedColumn() 
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true }) 
+  @Column({ unique: true })
   email: string;
 
   @Column()
@@ -16,7 +16,6 @@ export class User {
   @Column()
   lastName: string;
 
- 
   @Column({ default: 'Student' })
   role: string;
 

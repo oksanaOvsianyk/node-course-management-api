@@ -6,7 +6,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { User } from '../user/user.entity';
-import { Lesson } from '../lesson/lesson.entity'; 
+import { Lesson } from '../lesson/lesson.entity';
 import { Enrollment } from '../enrollment/enrollment.entity';
 
 @Entity('courses')

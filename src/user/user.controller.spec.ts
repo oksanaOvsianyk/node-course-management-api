@@ -22,7 +22,6 @@ const createUserDto = {
 };
 const updateDto = { lastName: 'Updated' };
 
-
 const mockUserService = {
   findAll: jest.fn().mockResolvedValue([mockUser]),
   findOne: jest.fn().mockResolvedValue(mockUser),
@@ -63,18 +62,17 @@ describe('UserController', () => {
     const result = await controller.findAll();
     expect(mockUserService.findAll).toHaveBeenCalled();
     expect(result).toEqual([mockUser]);
-  }); // T3: GET /:id (findOne) 
+  }); // T3: GET /:id (findOne)
 
   it('4. should call UserService.findOne with ID', async () => {
-   
-    await controller.findOne('1' as any); 
+    await controller.findOne('1' as any);
     expect(mockUserService.findOne).toHaveBeenCalledWith('1');
-  }); // T4: PATCH /:id (update) 
+  }); // T4: PATCH /:id (update)
 
   it('5. should call UserService.update with ID and DTO', async () => {
     await controller.update('1' as any, updateDto);
     expect(mockUserService.update).toHaveBeenCalledWith('1', updateDto);
-  }); // T5: DELETE /:id (remove) 
+  }); // T5: DELETE /:id (remove)
 
   it('6. should call UserService.remove with ID', async () => {
     await controller.remove('1' as any);

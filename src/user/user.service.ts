@@ -6,7 +6,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UserService {
- 
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
@@ -14,21 +13,18 @@ export class UserService {
 
   // Роут 1: Створити користувача (POST)
   async create(createUserDto: CreateUserDto): Promise<User> {
-   
     const newUser = this.usersRepository.create(createUserDto);
-   
+
     return this.usersRepository.save(newUser);
   }
 
   // Роут 2: Отримати список усіх користувачів (GET /)
   async findAll(): Promise<User[]> {
-   
     return this.usersRepository.find();
   }
 
   // Роут 3: Отримати профіль за ID (GET /:id)
   async findOne(id: number): Promise<User> {
-   
     const user = await this.usersRepository.findOneBy({ id });
 
     if (!user) {
@@ -51,7 +47,7 @@ export class UserService {
 
   // Роут 5: Видалити користувача (DELETE /:id)
   async remove(id: number): Promise<void> {
-    const result = await this.usersRepository.delete(id);  
+    const result = await this.usersRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
