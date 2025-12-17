@@ -23,7 +23,7 @@ export class UserController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    // Додано async та змінено тип повернення на Promise<User>
+   
     return this.userService.create(createUserDto);
   }
 

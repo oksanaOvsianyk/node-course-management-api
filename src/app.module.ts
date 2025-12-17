@@ -15,8 +15,6 @@ import { Enrollment } from './enrollment/enrollment.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      // Якщо є DATABASE_URL (на Render), використовуємо її.
-      // Якщо немає (локально) — використовуємо старі налаштування.
       url: process.env.DATABASE_URL,
       host: process.env.DATABASE_URL ? undefined : 'localhost',
       port: process.env.DATABASE_URL ? undefined : 5432,
@@ -25,7 +23,6 @@ import { Enrollment } from './enrollment/enrollment.entity';
       database: process.env.DATABASE_URL ? undefined : 'course_management_db',
       entities: [User, Course, Lesson, Enrollment],
       synchronize: true,
-      // Додаємо SSL налаштування, які вимагає Render
       ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
     }),
     UserModule,

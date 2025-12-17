@@ -4,10 +4,10 @@ import { Enrollment } from '../enrollment/enrollment.entity';
 
 @Entity('users') // Назва таблиці у PostgreSQL
 export class User {
-  @PrimaryGeneratedColumn() // Автоматично генерується, є первинним ключем
+  @PrimaryGeneratedColumn() 
   id: number;
 
-  @Column({ unique: true }) // Унікальне поле
+  @Column({ unique: true }) 
   email: string;
 
   @Column()
@@ -16,7 +16,7 @@ export class User {
   @Column()
   lastName: string;
 
-  // Роль користувача (використовуємо простий рядок)
+ 
   @Column({ default: 'Student' })
   role: string;
 

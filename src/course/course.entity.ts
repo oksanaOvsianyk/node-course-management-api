@@ -5,8 +5,8 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { User } from '../user/user.entity'; // Імпорт User
-import { Lesson } from '../lesson/lesson.entity'; // Майбутній імпорт Lesson
+import { User } from '../user/user.entity';
+import { Lesson } from '../lesson/lesson.entity'; 
 import { Enrollment } from '../enrollment/enrollment.entity';
 
 @Entity('courses')

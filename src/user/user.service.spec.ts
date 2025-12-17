@@ -35,7 +35,7 @@ describe('UserService', () => {
   const mockRepository = {
     find: jest.fn().mockResolvedValue(mockUsers),
     findOneBy: jest.fn().mockResolvedValue(mockUser),
-    // ВИПРАВЛЕНО: додано типізацію входу (CreateUserDto) та виходу (User)
+    
     create: jest
       .fn()
       .mockImplementation((dto: CreateUserDto): User => dto as User),
@@ -55,7 +55,7 @@ describe('UserService', () => {
     }).compile();
 
     service = module.get<UserService>(UserService);
-    // ВИПРАВЛЕНО: типізоване отримання репозиторію для усунення unsafe-assignment
+   
     repository = module.get<Repository<User>>(getRepositoryToken(User));
     jest.clearAllMocks();
   });
@@ -66,7 +66,7 @@ describe('UserService', () => {
   });
 
   it('should create a user', async () => {
-    // ВИПРАВЛЕНО: прибрано 'as any'
+   
     const result = await service.create(createUserDto);
     expect(mockRepository.create).toHaveBeenCalledWith(createUserDto);
     expect(mockRepository.save).toHaveBeenCalled();
@@ -86,7 +86,7 @@ describe('UserService', () => {
   });
 
   it('should throw NotFoundException if user is not found', async () => {
-    // ВИПРАВЛЕНО: використання spyOn для безпечної зміни поведінки мока
+   
     jest.spyOn(mockRepository, 'findOneBy').mockResolvedValueOnce(null);
     await expect(service.findOne(99)).rejects.toThrow(
       'User with ID 99 not found',

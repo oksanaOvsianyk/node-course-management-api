@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CourseService } from './course.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Course } from './course.entity';
-import { Repository } from 'typeorm'; // Додано DeleteResult
+import { Repository } from 'typeorm'; 
 import { CreateCourseDto } from './dto/create-course.dto';
-import { User } from '../user/user.entity'; // Імпортуйте сутність User
+import { User } from '../user/user.entity'; 
 
 // 1. Імітаційні дані
 const mockCourse = {
@@ -13,7 +13,6 @@ const mockCourse = {
   description: 'A course for testing',
   instructorId: 1,
   lessons: [],
-  // ВИПРАВЛЕНО: використовуємо unknown для безпечного приведення типів без any
   instructor: null as unknown as User,
   enrollments: [],
 } as Course;
@@ -33,7 +32,7 @@ const mockRepository: Partial<Repository<Course>> = {
   find: jest.fn().mockResolvedValue(mockCourses),
   findOne: jest.fn(),
   findOneBy: jest.fn(),
-  // ВИПРАВЛЕНО: додано повернення типу Course
+  
   create: jest
     .fn()
     .mockImplementation((dto: CreateCourseDto): Course => dto as Course),
@@ -72,7 +71,7 @@ describe('CourseService', () => {
   // --- CRUD ТЕСТИ ---
 
   it('should create a course and return it', async () => {
-    // ВИПРАВЛЕНО: видалено 'as any', використовуємо типізоване DTO
+   
     const result = await service.create(createCourseDto);
     expect(mockRepository.create).toHaveBeenCalledWith(createCourseDto);
     expect(mockRepository.save).toHaveBeenCalled();

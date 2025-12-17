@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm'; // <-- НОВИЙ ІМПОРТ
-import { Repository } from 'typeorm'; // <-- НОВИЙ ІМПОРТ
-import { Course } from './course.entity'; // <-- ЗМІНА: Імпортуємо Entity, а не Interface
+import { InjectRepository } from '@nestjs/typeorm'; 
+import { Repository } from 'typeorm'; 
+import { Course } from './course.entity'; 
 import { CreateCourseDto } from './dto/create-course.dto';
-// Інтерфейс Course більше не потрібен
+
 
 @Injectable()
 export class CourseService {
@@ -14,16 +14,14 @@ export class CourseService {
 
   // Роут 1: Створити курс (POST)
   async create(createCourseDto: CreateCourseDto): Promise<Course> {
-    // <-- async
-    // Створюємо екземпляр сутності
+   
     const newCourse = this.coursesRepository.create(createCourseDto);
-    // Зберігаємо у БД
+    
     return this.coursesRepository.save(newCourse);
   }
 
   // Роут 2: Список усіх курсів (GET /)
   async findAll(): Promise<Course[]> {
-    // <-- async
     // Отримуємо всі курси, одразу завантажуючи пов'язаного інструктора
     return this.coursesRepository.find({
       relations: ['instructor'],
@@ -35,7 +33,6 @@ export class CourseService {
     // <-- async
     const course = await this.coursesRepository.findOne({
       where: { id },
-      // Завантажуємо інструктора та всі уроки, пов'язані з цим курсом
       relations: ['instructor', 'lessons'],
     });
 
@@ -47,7 +44,7 @@ export class CourseService {
 
   // Роут 4: Оновити курс (PUT /:id)
   async update(id: number, updateData: Partial<Course>): Promise<Course> {
-    // <-- async
+   
     const course = await this.coursesRepository.findOneBy({ id });
 
     if (!course) {

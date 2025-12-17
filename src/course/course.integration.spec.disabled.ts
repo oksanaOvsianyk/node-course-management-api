@@ -5,11 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CourseModule } from './course.module';
 import { Course } from './course.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm'; // Додано для типізації
-
+import { Repository } from 'typeorm';
 describe('Course Integration Tests', () => {
   let app: INestApplication;
-  let courseRepository: Repository<Course>; // Виправлено: типізація замість any
+  let courseRepository: Repository<Course>;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -34,7 +33,6 @@ describe('Course Integration Tests', () => {
   });
 
   beforeEach(async () => {
-    // Виправлено: безпечний виклик query
     await courseRepository.query('DELETE FROM course;');
   });
 
@@ -50,7 +48,6 @@ describe('Course Integration Tests', () => {
       .send(newCourse)
       .expect(201)
       .expect((res: { body: { title: string; id: number } }) => {
-        // Виправлено: типізація аргументу res для усунення помилок member access
         expect(res.body.title).toEqual(newCourse.title);
         expect(res.body.id).toBeDefined();
       });

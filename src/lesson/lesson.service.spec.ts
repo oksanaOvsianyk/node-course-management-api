@@ -16,7 +16,7 @@ describe('LessonService', () => {
     title: 'Test Lesson',
     content: 'Content',
     courseId: 1,
-    course: null as unknown as Course, // Виправлено: уникаємо any через unknown
+    course: null as unknown as Course, 
   } as Lesson;
 
   const mockLessons: Lesson[] = [mockLesson];
@@ -55,7 +55,7 @@ describe('LessonService', () => {
     }).compile();
 
     service = module.get<LessonService>(LessonService);
-    // Виправлено: додаємо типізацію для отримання репозиторію, щоб не було unsafe-assignment
+   
     repository = module.get<Repository<Lesson>>(getRepositoryToken(Lesson));
 
     jest.clearAllMocks();
@@ -67,7 +67,7 @@ describe('LessonService', () => {
   });
 
   it('2. should create a lesson and call save', async () => {
-    // Тепер передаємо чисте DTO без 'as any'
+    
     const result = await service.create(createLessonDto);
     expect(mockRepository.create).toHaveBeenCalledWith(createLessonDto);
     expect(mockRepository.save).toHaveBeenCalled();

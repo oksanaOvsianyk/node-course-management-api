@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../src/app.module';
 
-// Описуємо інтерфейс для відповіді, щоб уникнути помилок any
+
 interface TestResponse {
   id: number;
   email?: string;
@@ -16,7 +16,7 @@ describe('E2E Test Suite (e2e)', () => {
   let app: INestApplication;
   const baseUrl = '/api/v1';
 
-  // Змінні для зберігання ID замість використання global (що є поганою практикою)
+ 
   let instructorId: number;
   let courseId: number;
 
